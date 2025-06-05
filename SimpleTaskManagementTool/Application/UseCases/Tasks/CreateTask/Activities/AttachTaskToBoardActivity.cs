@@ -29,7 +29,7 @@ namespace Application.UseCases.Tasks.CreateTask.Activities
             var board = await _boardRepo.GetByIdAsync(context.Request.BoardId, cancellationToken);
             if (board is null)
             {
-                context = new(context.Request, Result<TaskDto>.Fail($"Board '{context.Request.BoardId}' not found."));
+                context.Result = Result<TaskDto>.Fail($"Board '{context.Request.BoardId}' not found.");
                 return;
             }
 
