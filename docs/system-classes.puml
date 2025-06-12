@@ -1,0 +1,39 @@
+@startuml
+' System architecture across layers
+
+package Domain {
+  class Board
+  class TaskEntity
+  enum TaskStatus
+}
+
+package Application {
+  class UseCaseFactory
+  class ActivityFactory
+  interface IActivity
+  interface IUseCase
+  package Validators
+  package UseCases
+}
+
+package Infrastructure {
+  class SimpleTaskDbContext
+  class BoardRepository
+  class DateTimeProvider
+}
+
+package WebApi {
+  class BoardsController
+  class TasksController
+  class UserContextService
+  class RequestLoggingMiddleware
+  class ExceptionHandlingMiddleware
+}
+
+Domain --> Application
+Application --> Infrastructure
+WebApi --> Application
+WebApi --> Infrastructure
+Infrastructure --> Domain
+
+@enduml
