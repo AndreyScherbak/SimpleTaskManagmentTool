@@ -1,0 +1,19 @@
+@startuml
+' Cross-project dependency relationships
+
+package Domain
+package Application
+package Infrastructure
+package WebApi
+package Tests
+
+Domain <.. Application
+Application <.. WebApi
+Application <.. Infrastructure
+Infrastructure <.. WebApi
+Infrastructure ..> Domain
+Tests ..> Domain
+Tests ..> Application
+Tests ..> Infrastructure
+
+@enduml
