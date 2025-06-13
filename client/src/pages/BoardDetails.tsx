@@ -50,16 +50,6 @@ export default function BoardDetails() {
           Add Task
         </Button>
       </Stack>
-      <Stack direction="row" spacing={2} alignItems="flex-start">
-        {['Todo', 'InProgress', 'Done'].map((status) => (
-          <div key={status} style={{ width: '33%' }}>
-            <Typography variant="h6">{status}</Typography>
-            {tasks.filter((t) => t.status === status).map((t) => (
-              <TaskCard key={t.id} task={t} />
-            ))}
-          </div>
-        ))}
-      </Stack>
     </div>
   );
 }
