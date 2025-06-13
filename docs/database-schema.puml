@@ -1,0 +1,22 @@
+@startuml
+' Database schema for boards and tasks
+hide circle
+
+entity Board {
+  +Id : Guid <<PK>>
+  --
+  Title : string
+}
+
+entity TaskEntity {
+  +Id : Guid <<PK>>
+  BoardId : Guid <<FK>>
+  Title : string
+  CreatedAt : DateTime
+  DueDate : DateTime?
+  Status : int
+}
+
+Board ||--o{ TaskEntity : BoardId
+
+@enduml

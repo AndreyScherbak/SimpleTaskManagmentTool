@@ -1,0 +1,50 @@
+@startuml
+' Activity classes for each use case pipeline
+
+interface IActivity<TContext>
+class ActivityContext<TRequest, TResult>
+
+package "CreateBoard" {
+  class ValidateTitleActivity
+  class SaveBoardActivity
+}
+
+package "CreateTask" {
+  class ValidateTaskDetailsActivity
+  class AttachTaskToBoardActivity
+  class SaveTaskActivity
+}
+
+package "EditTask" {
+  class ValidateEditTaskActivity
+  class LoadTaskActivity
+  class ApplyTaskChangesActivity
+}
+
+package "MoveTask" {
+  class LoadTaskActivity
+  class ValidateStatusTransitionActivity
+  class UpdateTaskStatusActivity
+  class PersistStatusChangeActivity
+}
+
+package "DeleteTask" {
+  class LoadTaskForDeleteActivity
+  class PerformDeleteTaskActivity
+}
+
+IActivity <|.. ValidateTitleActivity
+IActivity <|.. SaveBoardActivity
+IActivity <|.. ValidateTaskDetailsActivity
+IActivity <|.. AttachTaskToBoardActivity
+IActivity <|.. SaveTaskActivity
+IActivity <|.. ValidateEditTaskActivity
+IActivity <|.. LoadTaskActivity
+IActivity <|.. ApplyTaskChangesActivity
+IActivity <|.. ValidateStatusTransitionActivity
+IActivity <|.. UpdateTaskStatusActivity
+IActivity <|.. PersistStatusChangeActivity
+IActivity <|.. LoadTaskForDeleteActivity
+IActivity <|.. PerformDeleteTaskActivity
+
+@enduml
