@@ -6,6 +6,7 @@ export function useDashboardVm() {
   const [boards, setBoards] = useState<BoardDto[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -17,9 +18,14 @@ export function useDashboardVm() {
   }, []);
 
   const createBoard = async (title: string) => {
-    const board = await api.createBoard(title);
-    setBoards((b) => [...b, board]);
+    try {
+      const board = await api.createBoard(title);
+      setBoards((b) => [...b, board]);
+      setActionError(null);
+    } catch (e) {
+      setActionError((e as Error).message);
+    }
   };
 
-  return { boards, loading, error, createBoard };
+  return { boards, loading, error, actionError, createBoard };
 }

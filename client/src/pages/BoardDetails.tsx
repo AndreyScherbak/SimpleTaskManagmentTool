@@ -10,7 +10,17 @@ import TaskCard from '../components/TaskCard';
 import { useBoardDetailsVm } from '../viewmodels/useBoardDetailsVm';
 
 export default function BoardDetails() {
-  const { board, tasks, loading, error, createTask } = useBoardDetailsVm();
+  const {
+    board,
+    tasks,
+    loading,
+    error,
+    actionError,
+    createTask,
+    updateTask,
+    moveTask,
+    deleteTask,
+  } = useBoardDetailsVm();
   const [title, setTitle] = useState('');
   const [dueDate, setDueDate] = useState('');
 

@@ -12,6 +12,7 @@ export function useBoardDetailsVm() {
   const [tasks, setTasks] = useState<TaskDto[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -26,23 +27,43 @@ export function useBoardDetailsVm() {
   }, [boardId]);
 
   const createTask = async (title: string, dueDate: string | null) => {
-    const task = await tasksApi.createTask(boardId, title, dueDate);
-    setTasks((t) => [...t, task]);
+    try {
+      const task = await tasksApi.createTask(boardId, title, dueDate);
+      setTasks((t) => [...t, task]);
+      setActionError(null);
+    } catch (e) {
+      setActionError((e as Error).message);
+    }
   };
 
   const updateTask = async (taskId: string, title: string, dueDate: string | null) => {
-    const task = await tasksApi.updateTask(boardId, taskId, title, dueDate);
-    setTasks((ts) => ts.map((t) => (t.id === taskId ? task : t)));
+    try {
+      const task = await tasksApi.updateTask(boardId, taskId, title, dueDate);
+      setTasks((ts) => ts.map((t) => (t.id === taskId ? task : t)));
+      setActionError(null);
+    } catch (e) {
+      setActionError((e as Error).message);
+    }
   };
 
   const moveTask = async (taskId: string, targetStatus: string) => {
-    const task = await tasksApi.moveTask(boardId, taskId, targetStatus);
-    setTasks((ts) => ts.map((t) => (t.id === taskId ? task : t)));
+    try {
+      const task = await tasksApi.moveTask(boardId, taskId, targetStatus);
+      setTasks((ts) => ts.map((t) => (t.id === taskId ? task : t)));
+      setActionError(null);
+    } catch (e) {
+      setActionError((e as Error).message);
+    }
   };
 
   const deleteTask = async (taskId: string) => {
-    await tasksApi.deleteTask(boardId, taskId);
-    setTasks((ts) => ts.filter((t) => t.id !== taskId));
+    try {
+      await tasksApi.deleteTask(boardId, taskId);
+      setTasks((ts) => ts.filter((t) => t.id !== taskId));
+      setActionError(null);
+    } catch (e) {
+      setActionError((e as Error).message);
+    }
   };
 
   return {
@@ -50,6 +71,7 @@ export function useBoardDetailsVm() {
     tasks,
     loading,
     error,
+    actionError,
     createTask,
     updateTask,
     moveTask,
