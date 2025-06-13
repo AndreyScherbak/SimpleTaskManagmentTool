@@ -26,7 +26,7 @@ namespace Application.UseCases.Tasks.CreateTask.Activities
 
             if (savedTask is null)
             {
-                context = new(context.Request, Result<TaskDto>.Fail("Task could not be persisted."));
+                context.Result = Result<TaskDto>.Fail("Task could not be persisted.");
                 return;
             }
 
@@ -37,7 +37,7 @@ namespace Application.UseCases.Tasks.CreateTask.Activities
                       savedTask.DueDate,
                       savedTask.Status.ToString());
 
-            context = new(context.Request, Result<TaskDto>.Ok(dto));
+            context.Result = Result<TaskDto>.Ok(dto);
             await next();
         }
     }

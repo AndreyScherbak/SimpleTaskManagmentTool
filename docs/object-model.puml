@@ -1,0 +1,33 @@
+@startuml
+' Object model showing domain entities
+
+class Board {
+  +Guid Id
+  +string Title
+  +IReadOnlyCollection<TaskEntity> Tasks
+  +AddTask(TaskEntity)
+  +RemoveTask(Guid): bool
+}
+
+class TaskEntity {
+  +Guid Id
+  +string Title
+  +DateTime CreatedAt
+  +DateTime? DueDate
+  +TaskStatus Status
+  +Guid BoardId
+  +Board Board
+  +SetTitle(string)
+  +SetDueDate(DateTime?)
+  +MoveTo(TaskStatus)
+}
+
+enum TaskStatus {
+  Todo
+  InProgress
+  Done
+}
+
+Board "1" o-- "*" TaskEntity : contains
+
+@enduml

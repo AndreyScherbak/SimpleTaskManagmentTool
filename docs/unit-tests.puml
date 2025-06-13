@@ -1,0 +1,21 @@
+@startuml
+' Diagram illustrating unit test setup
+
+package "Tests.Unit" {
+  class CreateTaskHandlerTests
+  class MoveTaskHandlerTests
+  class BoardTests
+  class TaskItemTests
+  class FakeBoardRepository
+  class FakeDateTimeProvider
+}
+
+CreateTaskHandlerTests --> FakeBoardRepository
+CreateTaskHandlerTests --> FakeDateTimeProvider
+CreateTaskHandlerTests --> CreateTaskHandler
+MoveTaskHandlerTests --> FakeBoardRepository
+MoveTaskHandlerTests --> MoveTaskHandler
+BoardTests --> Board
+TaskItemTests --> TaskEntity
+
+@enduml
