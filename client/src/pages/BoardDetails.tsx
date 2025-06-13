@@ -60,6 +60,27 @@ export default function BoardDetails() {
           Add Task
         </Button>
       </Stack>
+      {actionError && (
+        <Typography color="error" sx={{ mb: 2 }}>
+          {actionError}
+        </Typography>
+      )}
+      <Stack direction="row" spacing={2} alignItems="flex-start">
+        {['Todo', 'InProgress', 'Done'].map((status) => (
+          <div key={status} style={{ width: '33%' }}>
+            <Typography variant="h6">{status}</Typography>
+            {tasks.filter((t) => t.status === status).map((t) => (
+              <TaskCard
+                key={t.id}
+                task={t}
+                onEdit={(title, dueDate) => updateTask(t.id, title, dueDate)}
+                onMove={(s) => moveTask(t.id, s)}
+                onDelete={() => deleteTask(t.id)}
+              />
+            ))}
+          </div>
+        ))}
+      </Stack>
     </div>
   );
 }

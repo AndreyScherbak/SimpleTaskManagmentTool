@@ -14,22 +14,29 @@ export function useBoardDetailsVm() {
   const [error, setError] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const loadBoard = async () => {
     setLoading(true);
-    boardsApi
-      .fetchBoard(boardId)
-      .then((res) => {
-        setBoard(res.board);
-        setTasks(res.tasks);
-      })
-      .catch((e) => setError(e.message))
-      .finally(() => setLoading(false));
+    try {
+      const res = await boardsApi.fetchBoard(boardId);
+      setBoard(res.board);
+      setTasks(res.tasks);
+      setError(null);
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadBoard();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [boardId]);
 
   const createTask = async (title: string, dueDate: string | null) => {
     try {
-      const task = await tasksApi.createTask(boardId, title, dueDate);
-      setTasks((t) => [...t, task]);
+      await tasksApi.createTask(boardId, title, dueDate);
+      await loadBoard();
       setActionError(null);
     } catch (e) {
       setActionError((e as Error).message);
@@ -38,8 +45,8 @@ export function useBoardDetailsVm() {
 
   const updateTask = async (taskId: string, title: string, dueDate: string | null) => {
     try {
-      const task = await tasksApi.updateTask(boardId, taskId, title, dueDate);
-      setTasks((ts) => ts.map((t) => (t.id === taskId ? task : t)));
+      await tasksApi.updateTask(boardId, taskId, title, dueDate);
+      await loadBoard();
       setActionError(null);
     } catch (e) {
       setActionError((e as Error).message);
@@ -48,8 +55,8 @@ export function useBoardDetailsVm() {
 
   const moveTask = async (taskId: string, targetStatus: string) => {
     try {
-      const task = await tasksApi.moveTask(boardId, taskId, targetStatus);
-      setTasks((ts) => ts.map((t) => (t.id === taskId ? task : t)));
+      await tasksApi.moveTask(boardId, taskId, targetStatus);
+      await loadBoard();
       setActionError(null);
     } catch (e) {
       setActionError((e as Error).message);
@@ -59,7 +66,7 @@ export function useBoardDetailsVm() {
   const deleteTask = async (taskId: string) => {
     try {
       await tasksApi.deleteTask(boardId, taskId);
-      setTasks((ts) => ts.filter((t) => t.id !== taskId));
+      await loadBoard();
       setActionError(null);
     } catch (e) {
       setActionError((e as Error).message);
