@@ -1,0 +1,17 @@
+@startuml
+' Sequence for creating a task from BoardDetails page
+actor User
+participant "BoardDetails component" as Page
+participant "useBoardDetailsVm" as VM
+participant tasksApi as API
+participant WebAPI as Server
+
+User -> Page : submit new task
+Page -> VM : onCreate(title, dueDate)
+VM -> API : createTask(boardId,title,dueDate)
+API -> Server : POST /api/boards/{id}/tasks
+Server --> API : TaskDto
+API --> VM : promise resolved
+VM -> Page : update state
+Page --> User : task appears
+@enduml
