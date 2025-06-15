@@ -63,7 +63,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IActivity<ActivityContext<CreateBoardRequest, Result<CreateBoardResponse>>>, ValidateTitleActivity>();
         services.AddTransient<IActivity<ActivityContext<CreateBoardRequest, Result<CreateBoardResponse>>>, SaveBoardActivity>();
 
-        services.AddTransient<IActivity<ActivityContext<CreateTaskRequest, Result<Application.Abstractions.DTOs.TaskDto>>>, ValidateTaskDetailsActivity>();
+        services.AddTransient<IActivity<ActivityContext<CreateTaskRequest, Result<TaskDto>>>, ValidateTaskDetailsActivity>();
         services.AddTransient<IActivity<ActivityContext<CreateTaskRequest, Result<TaskDto>>>, AttachTaskToBoardActivity>();
         services.AddTransient<IActivity<ActivityContext<CreateTaskRequest, Result<TaskDto>>>, SaveTaskActivity>();
 

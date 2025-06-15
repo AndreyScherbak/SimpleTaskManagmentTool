@@ -2,7 +2,7 @@
 
 This repository implements a simple Kanban-like task manager using a clean architecture approach.
 
-The `docs/` folder contains PlantUML diagrams describing the system.
+The `docs/` folder contains PlantUML diagrams describing the system.  New diagrams illustrate the React client architecture and flows. See `client-architecture.puml`, `client-class.puml`, and `client-sequence.puml`.
 
 ## Client application
 

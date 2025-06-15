@@ -1,0 +1,20 @@
+@startuml
+' Key components and hooks
+class Dashboard {
+  +useDashboardVm()
+}
+class BoardDetails {
+  +useBoardDetailsVm(boardId)
+}
+class BoardCard
+class TaskCard
+class boardsApi
+class tasksApi
+
+Dashboard --> boardsApi : fetch boards
+Dashboard --> BoardCard : renders
+BoardDetails --> tasksApi : manage tasks
+BoardDetails --> TaskCard : renders
+BoardDetails --> boardsApi : fetch board
+
+@enduml
