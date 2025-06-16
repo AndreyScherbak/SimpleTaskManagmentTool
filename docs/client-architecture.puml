@@ -1,0 +1,14 @@
+@startuml
+' High level structure of the React client application
+package client {
+  [Components] as C
+  [ViewModels] as VM
+  [API services] as API
+  [Routes] as R
+}
+
+C --> VM : receive props from
+VM --> API : calls
+R --> C : renders pages
+R --> VM : init hooks
+@enduml

@@ -1,6 +1,6 @@
 ﻿using Application.Abstractions.Activites;
-using Application.Abstractions.DTOs;
 using Application.Abstractions.Models;
+using Application.UseCases.Tasks.Common;
 
 namespace Application.UseCases.Tasks.CreateTask.Activities
 {
@@ -17,7 +17,7 @@ namespace Application.UseCases.Tasks.CreateTask.Activities
             var validation = await _validator.ValidateAsync(context.Request, cancellationToken);
             if (!validation.Success)
             {
-                context = new(context.Request, Result<TaskDto>.Fail(validation.Error!));
+                context.Result = Result<TaskDto>.Fail(validation.Error!);
                 return; // short‑circuit
             }
 

@@ -22,8 +22,7 @@ namespace Application.UseCases.Tasks.DeleteTask.Activities
 
             if (board is null)
             {
-                context = new(context.Request,
-                              Result<TaskDto>.Fail($"Board '{context.Request.BoardId}' not found."));
+                context.Result = Result<TaskDto>.Fail($"Board '{context.Request.BoardId}' not found.");
                 return;
             }
 
@@ -31,8 +30,7 @@ namespace Application.UseCases.Tasks.DeleteTask.Activities
 
             if (task is null)
             {
-                context = new(context.Request,
-                              Result<TaskDto>.Fail($"Task '{context.Request.TaskId}' not found on board."));
+                context.Result = Result<TaskDto>.Fail($"Task '{context.Request.TaskId}' not found on board.");
                 return;
             }
 

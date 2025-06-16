@@ -1,0 +1,30 @@
+@startuml
+' Sequence diagram for CreateTask use case
+
+actor Client
+participant "TasksController" as API
+participant UseCaseFactory
+participant "CreateTaskHandler" as Handler
+participant "ValidateTaskDetailsActivity" as Validate
+participant "AttachTaskToBoardActivity" as Attach
+participant "SaveTaskActivity" as Save
+participant BoardRepository
+database DB
+
+Client -> API : POST /boards/{id}/tasks
+API -> UseCaseFactory : ExecuteAsync(request)
+UseCaseFactory -> Handler : ExecuteAsync
+activate Handler
+Handler -> Validate : ExecuteAsync
+Validate --> Handler : next()
+Handler -> Attach : ExecuteAsync
+Attach --> Handler : next()
+Handler -> Save : ExecuteAsync
+Save -> BoardRepository : SaveChangesAsync
+BoardRepository -> DB : insert/update
+DB --> BoardRepository
+Save --> Handler : next()
+Handler --> UseCaseFactory : Result<TaskDto>
+UseCaseFactory --> API : result
+API --> Client : HTTP 200 Task
+@enduml

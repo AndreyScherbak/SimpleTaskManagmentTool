@@ -19,41 +19,16 @@ namespace Application.Services
         public UseCaseFactory(IServiceProvider provider) => _provider = provider;
 
         /// <inheritdoc cref="IUseCase{TRequest,TResult}.ExecuteAsync"/>
-        public async Task<TResult> ExecuteAsync<TRequest, TResult, TUseCase>(
+        public Task<TResult> ExecuteAsync<TRequest, TResult, TUseCase>(
             TRequest request,
             CancellationToken ct = default)
             where TUseCase : IUseCase<TRequest, TResult>
             where TResult : Result
         {
-            // Resolve concrete use-case
+            // Resolve the concrete use case and delegate execution to it. The
+            // use case itself is responsible for running its activity pipeline.
             var useCase = _provider.GetRequiredService<TUseCase>();
-
-            // Create context and (optionally) retrieve activities
-            var ctx = new ActivityContext<TRequest, TResult>(request);
-
-            var factory = _provider.GetService<
-                IActivityFactory<ActivityContext<TRequest, TResult>>>();
-
-            var activities = factory?.CreatePipeline().ToArray()
-                          ?? Array.Empty<IActivity<ActivityContext<TRequest, TResult>>>();
-
-            // Tail handler: run the use-case and store its result
-            Func<Task> handler = async () =>
-            {
-                ctx.Result = await useCase.ExecuteAsync(request, ct);
-            };
-
-            // Wrap the tail with each activity (reverse order)
-            foreach (var activity in activities.Reverse())
-            {
-                var next = handler;
-                handler = () => activity.ExecuteAsync(ctx, next, ct);
-            }
-
-            // Run the composed chain
-            await handler();
-
-            return ctx.Result!;
+            return useCase.ExecuteAsync(request, ct);
         }
     }
 }

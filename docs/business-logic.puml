@@ -1,0 +1,31 @@
+@startuml
+' Overview of use case handlers and the factory
+
+interface IUseCase<TReq, TRes>
+class UseCaseFactory
+
+class CreateBoardHandler
+class ViewBoardsListHandler
+class ViewBoardDetailsHandler
+class CreateTaskHandler
+class EditTaskHandler
+class MoveTaskHandler
+class DeleteTaskHandler
+
+UseCaseFactory --> CreateBoardHandler
+UseCaseFactory --> ViewBoardsListHandler
+UseCaseFactory --> ViewBoardDetailsHandler
+UseCaseFactory --> CreateTaskHandler
+UseCaseFactory --> EditTaskHandler
+UseCaseFactory --> MoveTaskHandler
+UseCaseFactory --> DeleteTaskHandler
+
+CreateBoardHandler ..|> IUseCase
+ViewBoardsListHandler ..|> IUseCase
+ViewBoardDetailsHandler ..|> IUseCase
+CreateTaskHandler ..|> IUseCase
+EditTaskHandler ..|> IUseCase
+MoveTaskHandler ..|> IUseCase
+DeleteTaskHandler ..|> IUseCase
+
+@enduml

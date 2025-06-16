@@ -22,8 +22,7 @@ namespace Application.UseCases.Tasks.DeleteTask.Activities
                 !context.Items.TryGetValue("Task", out var taskObj))
             {
                 // Safety net – should never happen if pipeline is wired correctly
-                context = new(context.Request,
-                              Result<TaskDto>.Fail("Internal pipeline error (missing Board/Task)."));
+                context.Result = Result<TaskDto>.Fail("Internal pipeline error (missing Board/Task).");
                 return;
             }
 
@@ -41,7 +40,7 @@ namespace Application.UseCases.Tasks.DeleteTask.Activities
                                   task.DueDate,
                                   task.Status.ToString());
 
-            context = new(context.Request, Result<TaskDto>.Ok(dto));
+            context.Result = Result<TaskDto>.Ok(dto);
 
             await next(); // tail-call for consistency
         }
